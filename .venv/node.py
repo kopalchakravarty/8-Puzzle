@@ -5,6 +5,8 @@ class Node:
     goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]] 
     goal_positions = {}
 
+    goal_state_tuple = tuple(map(tuple, goal_state))
+
     for row in range(3):
         for col in range(3):
             if goal_state[row][col] != 0:
@@ -134,21 +136,6 @@ class Node:
         return path[1:] # Remove the initial state's None action
 
 
-    # def __lt__(self, other):
-    #     """Comparison for priority queue (less than). Prioritizes lower f_cost."""
-    #     return self.f_cost < other.f_cost
-
-    # def __eq__(self, other):
-    #     """Equality check based on state."""
-    #     if not isinstance(other, Node):
-    #         return NotImplemented
-    #     return self.state_tuple == other.state_tuple
-
-    # def __hash__(self):
-    #     """Hash based on the state tuple for use in sets."""
-    #     return hash(self.state_tuple)
-
-    # def __repr__(self):
-    #     """String representation for debugging."""
-    #     return f"Node(f={self.f_cost}, g={self.g_cost}, h={self.h_cost}, state={self.state})"
+    # def __lt__(self, node):
+    #     return self.f_cost < node.f_cost
 
