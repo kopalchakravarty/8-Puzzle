@@ -12,7 +12,7 @@ class Node:
 
     def __init__(self, state, parent=None, action=None, g_cost=0, heuristic='manhattan'):
         self.state = state
-        # Use tuple representation for hashing and set membership checks
+
         self.state_tuple = tuple(map(tuple, self.state))
         self.parent = parent
         self.action = action
@@ -133,23 +133,22 @@ class Node:
             current = current.parent
         return path[1:] # Remove the initial state's None action
 
-    # --- Methods for Priority Queue and Set Operations ---
 
-    def __lt__(self, other):
-        """Comparison for priority queue (less than). Prioritizes lower f_cost."""
-        return self.f_cost < other.f_cost
+    # def __lt__(self, other):
+    #     """Comparison for priority queue (less than). Prioritizes lower f_cost."""
+    #     return self.f_cost < other.f_cost
 
-    def __eq__(self, other):
-        """Equality check based on state."""
-        if not isinstance(other, Node):
-            return NotImplemented
-        return self.state_tuple == other.state_tuple
+    # def __eq__(self, other):
+    #     """Equality check based on state."""
+    #     if not isinstance(other, Node):
+    #         return NotImplemented
+    #     return self.state_tuple == other.state_tuple
 
-    def __hash__(self):
-        """Hash based on the state tuple for use in sets."""
-        return hash(self.state_tuple)
+    # def __hash__(self):
+    #     """Hash based on the state tuple for use in sets."""
+    #     return hash(self.state_tuple)
 
-    def __repr__(self):
-        """String representation for debugging."""
-        return f"Node(f={self.f_cost}, g={self.g_cost}, h={self.h_cost}, state={self.state})"
+    # def __repr__(self):
+    #     """String representation for debugging."""
+    #     return f"Node(f={self.f_cost}, g={self.g_cost}, h={self.h_cost}, state={self.state})"
 
