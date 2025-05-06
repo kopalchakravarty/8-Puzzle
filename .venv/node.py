@@ -41,14 +41,15 @@ class Node:
         return misplaced
 
     def _manhattan_distance(self):
+        total = 0
         for row in range(3):
             for col in range(3):
                 current_tile = self.state[row][col]
                 if current_tile != 0:
                     goal_row, goal_col = Node.goal_positions[current_tile]
-                    d_row = abs(row - goal_row)
-                    d_col = abs(col - goal_col)
-        return d_row + d_col
+                    total += abs(row - goal_row) + abs(col - goal_col)
+        return total
+    
 
     def find_blank(self):
         for r in range(3):

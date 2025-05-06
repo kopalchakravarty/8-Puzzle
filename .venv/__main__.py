@@ -131,8 +131,9 @@ if __name__ == "__main__":
             print("\nSolution Path:")
             print_state(initial_state)
             for i, (action, state) in enumerate(solution_path):
-                print(f"Move {i+1}: {action.upper()}")
+                print(f"\nMove {i+1}: {action.upper()}\n")
                 print_state(state)
+                print("*" * 10)
             print("----- Goal Reached -----")
         else:
             print("\nNo solution could be found for the given initial state.")
