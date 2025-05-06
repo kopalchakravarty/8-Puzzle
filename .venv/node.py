@@ -136,6 +136,8 @@ class Node:
         return path[1:] # Remove the initial state's None action
 
 
-    # def __lt__(self, node):
-    #     return self.f_cost < node.f_cost
+    def __lt__(self, child):
+        if self.f_cost != child.f_cost:
+            return self.f_cost < child.f_cost
+        return self.state_tuple < child.state_tuple
 

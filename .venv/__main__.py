@@ -3,9 +3,9 @@ import time
 import sys
 from node import Node 
 
-def is_solvable(initial_state_flat): # Check if the puzzle is solvable
+def is_solvable(initial_state): # Check if the puzzle is solvable
     inversions = 0
-    tiles = [tile for tile in initial_state_flat if tile != 0]
+    tiles = [tile for tile in initial_state if tile != 0]
     n = len(tiles)
     for i in range(n):
         for j in range(i + 1, n):
@@ -19,15 +19,22 @@ def get_user_input():
     print("Numbers 1-8 represent the puzzle state, use 0 for blank space ")
     print("Numbers should be separated by spaces. Each row is a new line ")
 
+
     initial_state = []
 
     for i in range(3):
         row = i + 1
-        row_input = input(f"Enter row {row}: ").strip().split()
+        row_input = input(f"\nEnter row {row}: ").strip().split()
 
         row = [int(x) for x in row_input]
         initial_state.append(row)
 
+
+    state = [tile for row in initial_state for tile in row]
+    if not is_solvable(state):
+        print("\nThe provided puzzle is unsolvable. Aborting execution.")
+        sys.exit(1)  # error
+    
     # Select heuristic
     print("\nSelect the search heuristic:")
     print("1. Uniform Cost Search")
@@ -90,7 +97,6 @@ def a_star_search(initial_state, heuristic):
             if child_state_tuple not in visited or child_g_cost < visited[child_state_tuple]:
                 visited[child_state_tuple] = child_g_cost
                 heapq.heappush(nodes, (child.f_cost, child))
-                node_counter += 1
 
     end_time = time.time()
     print(f"No solution found after {end_time - start_time:.4f} sec. Search failed.")
@@ -109,6 +115,9 @@ if __name__ == "__main__":
         print_state(Node.goal_state)
 
         solution_path, num_expanded, max_q_len, sol_depth = a_star_search(initial_state, heuristic)
+
+        print(f"\n Beginning search using {heuristic}: \n")
+        print("*" * 20)
 
         if solution_path is not None:
             print("\n Solution Found: ")
