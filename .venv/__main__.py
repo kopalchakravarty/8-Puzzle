@@ -51,7 +51,7 @@ def get_user_input():
 def print_state(state):
     print("-" * 20)
     for row in state:
-        print("|", end="")
+        print("| ", end="")
         for tile in row:
             print(f" {tile if tile != 0 else ' '} ", end="|")
         print("\n" + "-" * 20)
@@ -81,7 +81,7 @@ def a_star_search(initial_state, heuristic):
             end_time = time.time()
             path = current_node.get_path()
             depth = len(path)
-            print(f"Goal reached in {end_time - start_time:.4f} seconds")
+            print(f"\n Goal reached in {end_time - start_time:.4f} seconds\n")
             return path, nodes_expanded, max_queue_size, depth
 
         nodes_expanded += 1
@@ -114,31 +114,30 @@ if __name__ == "__main__":
         print("\n Goal State:")
         print_state(Node.goal_state)
 
-        solution_path, num_expanded, max_q_len, sol_depth = a_star_search(initial_state, heuristic)
-
-        print(f"\n Beginning search using {heuristic}: \n")
+        print(f"\nBeginning search using {heuristic}: \n")
         print("*" * 20)
 
+        solution_path, num_expanded, max_q_len, sol_depth = a_star_search(initial_state, heuristic)
+
         if solution_path is not None:
-            print("\n Solution Found: ")
+            print("*" * 20)
+            print(f" * Nodes Expanded: {num_expanded}")
+            print(f" * Max Queue Size: {max_q_len}")
+            print(f" * Solution Depth: {sol_depth}")
             print("-" * 20)
+            
+            print("\nSolution Path:\n")
 
-            print(f" -> Nodes Expanded: {num_expanded}")
-            print(f" -> Max Queue Size: {max_q_len}")
-            print(f" -> Solution Depth: {sol_depth}")
-            print("-" * 20)
-
-            print("\nSolution Path:")
             print_state(initial_state)
             for i, (action, state) in enumerate(solution_path):
                 print(f"\nMove {i+1}: {action.upper()}\n")
                 print_state(state)
-                print("*" * 10)
-            print("----- Goal Reached -----")
+                print("*" * 20)
+            print("\n----- Goal Reached -----\n")
         else:
             print("\nNo solution could be found for the given initial state.")
             print("-" * 20)
-            print(f" -> Nodes Expanded: {num_expanded}")
-            print(f" -> Max Queue Size: {max_q_len}")
+            print(f" * Nodes Expanded: {num_expanded}")
+            print(f" * Max Queue Size: {max_q_len}")
             print("-" * 20)
 
