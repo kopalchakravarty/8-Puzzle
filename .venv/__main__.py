@@ -82,7 +82,7 @@ def a_star_search(initial_state, heuristic):
             path = current_node.get_path()
             depth = len(path)
             print(f"\n Goal reached in {end_time - start_time:.4f} seconds\n")
-            return path, nodes_expanded, max_queue_size, depth
+            return path, nodes_expanded, max_queue_size, depth, end_time - start_time
 
         nodes_expanded += 1
 
@@ -100,7 +100,7 @@ def a_star_search(initial_state, heuristic):
 
     end_time = time.time()
     print(f"No solution found after {end_time - start_time:.4f} sec. Search failed.")
-    return None, nodes_expanded, max_queue_size, 0
+    return None, nodes_expanded, max_queue_size, 0, end_time - start_time
 
 
 if __name__ == "__main__":
@@ -117,13 +117,13 @@ if __name__ == "__main__":
         print(f"\nBeginning search using {heuristic}: \n")
         print("*" * 20)
 
-        solution_path, num_expanded, max_q_len, sol_depth = a_star_search(initial_state, heuristic)
+        solution_path, nodes_expanded, max_queue_size, depth, time_taken = a_star_search(initial_state, heuristic)
 
         if solution_path is not None:
             print("*" * 20)
-            print(f" * Nodes Expanded: {num_expanded}")
-            print(f" * Max Queue Size: {max_q_len}")
-            print(f" * Solution Depth: {sol_depth}")
+            print(f" * Nodes Expanded: {nodes_expanded}")
+            print(f" * Max Queue Size: {max_queue_size}")
+            print(f" * Solution Depth: {depth}")
             print("-" * 20)
             
             print("\nSolution Path:\n")
@@ -137,7 +137,7 @@ if __name__ == "__main__":
         else:
             print("\nNo solution could be found for the given initial state.")
             print("-" * 20)
-            print(f" * Nodes Expanded: {num_expanded}")
-            print(f" * Max Queue Size: {max_q_len}")
+            print(f" * Nodes Expanded: {nodes_expanded}")
+            print(f" * Max Queue Size: {max_queue_size}")
             print("-" * 20)
 

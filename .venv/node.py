@@ -70,13 +70,13 @@ class Node:
             new_state[blank_row][blank_col] = new_state[swap_row][swap_col]
             new_state[swap_row][swap_col] = temp
 
-            child_node = Node(state=new_state,
+            node = Node(state=new_state,
                               parent=self,
                               action='up', # Action taken was 'up'
                               g_cost=self.g_cost + 1, # Cost increases by 1 move
                               heuristic=self.heuristic)
 
-            children.append(child_node) # Add to the list of children
+            children.append(node) # Add to the list of children
 
         if blank_row < 2: # Move DOWN
             new_state = copy.deepcopy(self.state)
@@ -86,12 +86,12 @@ class Node:
             new_state[blank_row][blank_col] = new_state[swap_row][swap_col]
             new_state[swap_row][swap_col] = temp
             
-            child_node = Node(state=new_state,
+            node = Node(state=new_state,
                               parent=self,
                               action='down',
                               g_cost=self.g_cost + 1,
                               heuristic=self.heuristic)
-            children.append(child_node)
+            children.append(node)
 
         if blank_col > 0: # Move LEFT
             new_state = copy.deepcopy(self.state)
@@ -101,13 +101,13 @@ class Node:
             new_state[blank_row][blank_col] = new_state[swap_row][swap_col]
             new_state[swap_row][swap_col] = temp
 
-            child_node = Node(state=new_state,
+            node = Node(state=new_state,
                               parent=self,
                               action='left',
                               g_cost=self.g_cost + 1,
                               heuristic=self.heuristic)
 
-            children.append(child_node)
+            children.append(node)
 
         if blank_col < 2: # Move RIGHT
             new_state = copy.deepcopy(self.state)
@@ -117,13 +117,13 @@ class Node:
             new_state[blank_row][blank_col] = new_state[swap_row][swap_col]
             new_state[swap_row][swap_col] = temp
             
-            child_node = Node(state=new_state,
+            node = Node(state=new_state,
                               parent=self,
                               action='right',
                               g_cost=self.g_cost + 1,
                               heuristic=self.heuristic)
 
-            children.append(child_node)
+            children.append(node)
 
         return children # Return valid children 
 
