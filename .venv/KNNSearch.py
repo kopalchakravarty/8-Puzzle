@@ -4,11 +4,9 @@ from itertools import combinations
 from collections import Counter
 
 def distance(point1: np.ndarray, point2: np.ndarray) -> float:
-    """Calculates how far apart two data points are."""
     return np.sqrt(np.sum((point1 - point2)**2))
 
 def predict_label(train_data: np.ndarray, train_labels: np.ndarray, test_point: np.ndarray, k_neighbors: int) -> int:
-    """Predicts the label of a new point by looking at its neighbors."""
     distances = []
 
     for i in range(len(train_data)):
@@ -49,7 +47,7 @@ def forward_feature_selection(data: np.ndarray, labels: np.ndarray, k: int) -> T
     best_feature_set = []
     all_possible_features = list(range(num_features))
 
-    print("\n--------- Starting forward selection algorithm ----------")
+    print("\n--------- Starting forward selection algorithm ----------\n")
 
     while len(selected_features) < num_features:
         best_current_accuracy = -1.0
@@ -63,7 +61,7 @@ def forward_feature_selection(data: np.ndarray, labels: np.ndarray, k: int) -> T
         for feature_index in remaining_features:
             current_features = selected_features + [feature_index]
             accuracy = leave_one_out_evaluation(data, labels, current_features, k)
-            print(f"\nUsing feature(s) {{{', '.join(map(str, [f + 1 for f in current_features]))}}} gives accuracy {accuracy:.1%}")
+            print(f"Using feature(s) {{{', '.join(map(str, [f + 1 for f in current_features]))}}} gives accuracy {accuracy:.1%}")
 
             if accuracy > best_current_accuracy:
                 best_current_accuracy = accuracy
@@ -74,11 +72,11 @@ def forward_feature_selection(data: np.ndarray, labels: np.ndarray, k: int) -> T
             if best_current_accuracy > best_accuracy:
                 best_accuracy = best_current_accuracy
                 best_feature_set = list(selected_features)
-            print(f"\nFeature set {{{', '.join(map(str, [f + 1 for f in selected_features]))}}} is best for this iteration with {best_current_accuracy:.1%}\n")
+            print(f"Feature set {{{', '.join(map(str, [f + 1 for f in selected_features]))}}} is best for this iteration with {best_current_accuracy:.1%}\n")
         else:
             break
 
-    print("\n------------ Forward selection complete ---------------")
+    print("\n------------ Forward selection complete ---------------\n")
     return best_feature_set, best_accuracy
 
 def backward_feature_elimination(data: np.ndarray, labels: np.ndarray, k: int) -> Tuple[List[int], float]:
@@ -88,9 +86,9 @@ def backward_feature_elimination(data: np.ndarray, labels: np.ndarray, k: int) -
     best_accuracy = leave_one_out_evaluation(data, labels, selected_features, k)
     best_feature_set = list(selected_features)
 
-    print("\n------------ Starting backward elimination algorithm -------------")
+    print("\n------------ Starting backward elimination algorithm -------------\n")
 
-    print(f"Initial accuracy with all {num_features} features is {best_accuracy:.1%}\nStarting search.")
+    print(f"Initial accuracy with all {num_features} features is {best_accuracy:.1%}\n")
 
     while len(selected_features) > 1:
         best_current_accuracy = -1.0
@@ -99,7 +97,7 @@ def backward_feature_elimination(data: np.ndarray, labels: np.ndarray, k: int) -
         for i in range(len(selected_features)):
             remaining_features = selected_features[:i] + selected_features[i+1:]
             accuracy = leave_one_out_evaluation(data, labels, remaining_features, k)
-            print(f"\nUsing feature(s) {{{', '.join(map(str, [f + 1 for f in remaining_features]))}}} gives accuracy {accuracy:.1%}")
+            print(f"Using feature(s) {{{', '.join(map(str, [f + 1 for f in remaining_features]))}}} gives accuracy {accuracy:.1%}")
 
             if accuracy > best_current_accuracy:
                 best_current_accuracy = accuracy
@@ -110,25 +108,25 @@ def backward_feature_elimination(data: np.ndarray, labels: np.ndarray, k: int) -
             if best_current_accuracy > best_accuracy:
                 best_accuracy = best_current_accuracy
                 best_feature_set = list(selected_features)
-            print(f"\nFeature set {{{', '.join(map(str, [f + 1 for f in selected_features]))}}} isbest for this iteration with {best_current_accuracy:.1%}\n")
+            print(f"\nRemoved feature: {removed_feature + 1}.\nFeature set {{{', '.join(map(str, [f + 1 for f in selected_features]))}}} is best for this iteration with {best_current_accuracy:.1%}\n")
         else:
             break
 
-    print("------------ Backward elimination complete ------------ ")
+    print("\n------------ Backward elimination complete ------------\n")
     return best_feature_set, best_accuracy
 
 if __name__ == "__main__":
 
-    data_file = input("Enter the file name") # CS205_small_Data__22.txt, CS205_large_Data__1.txt
-    print(f"We're using the file: {data_file}")
+    print("\n------- This is Kopal's Feature Selection Project -------- ")
+
+    data_file = input("Enter the file name: ") # CS205_small_Data__22.txt, CS205_large_Data__1.txt
+    print(f"\nWe're using the file: {data_file}")
 
     dataset = np.loadtxt(data_file, delimiter=None)
     labels = dataset[:, 0].astype(int)
     features = dataset[:, 1:]
 
-    k_value = 1
-
-    print("\n------- This is the Feature Selection Project -------- ")
+    #k = 1
     print(f"The dataset has {features.shape[1]} features and {len(labels)} examples")
 
     print("\nChoose one of the below search algorithms to run: ")
@@ -138,16 +136,16 @@ if __name__ == "__main__":
     choice = input("Enter your choice (1 or 2): ")
 
     if choice == '1':
-        best_features, accuracy = forward_feature_selection(features, labels, k_value)
-        print("\n------- Forward Selection Best Feature Set: --------")
+        best_features, accuracy = forward_feature_selection(features, labels, k=1)
+        print("\n------- Forward Selection Best Feature Set: --------\n")
         print(f"Best features found: {{{', '.join(map(str, [f + 1 for f in best_features]))}}}")
-        print(f"Accuracy: {accuracy:.1%}")
+        print(f"Accuracy: {accuracy:.1%}\n")
 
     elif choice == '2':
-        best_features, accuracy = backward_feature_elimination(features, labels, k_value)
-        print("\n------- Backward Elimination Best Feature Set: --------")
+        best_features, accuracy = backward_feature_elimination(features, labels, k=1)
+        print("\n------- Backward Elimination Best Feature Set: -------\n")
         print(f"Best features found: {{{', '.join(map(str, [f + 1 for f in best_features]))}}}")
-        print(f"Accuracy: {accuracy:.1%}")
+        print(f"Accuracy: {accuracy:.1%}\n")
 
     else:
       print(f"\n-------- Invalid Choice of Algorithm -------")
