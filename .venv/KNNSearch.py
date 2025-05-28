@@ -2,6 +2,15 @@ import numpy as np
 from typing import List, Tuple
 from itertools import combinations
 from collections import Counter
+import time, platform, psutil
+
+def print_machine_info(): # Machine Information
+    print("\n--- Machine Information ---")
+    print(f"Operating System: {platform.system()} {platform.release()}")
+    print(f"Processor: {platform.processor()}")
+    print(f"CPU Count: {psutil.cpu_count(logical=False)}")
+    print(f"Total RAM: {round(psutil.virtual_memory().total / (1024**3), 2)} GB")
+    print("---------------------------\n")
 
 def distance(point1: np.ndarray, point2: np.ndarray) -> float:
     return np.sqrt(np.sum((point1 - point2)**2))
@@ -49,6 +58,8 @@ def forward_feature_selection(data: np.ndarray, labels: np.ndarray, k: int) -> T
 
     print("\n--------- Starting forward selection algorithm ----------\n")
 
+    start_time = time.time() # start time
+
     while len(selected_features) < num_features:
         best_current_accuracy = -1.0
         feature_to_add = -1
@@ -75,9 +86,12 @@ def forward_feature_selection(data: np.ndarray, labels: np.ndarray, k: int) -> T
             print(f"Feature set {{{', '.join(map(str, [f + 1 for f in selected_features]))}}} is best for this iteration with {best_current_accuracy:.1%}\n")
         else:
             break
+    
+    end_time = time.time()  # Stop timing
+    run_time = end_time - start_time
 
     print("\n------------ Forward selection complete ---------------\n")
-    return best_feature_set, best_accuracy
+    return best_feature_set, best_accuracy, run_time
 
 def backward_feature_elimination(data: np.ndarray, labels: np.ndarray, k: int) -> Tuple[List[int], float]:
 
@@ -88,7 +102,9 @@ def backward_feature_elimination(data: np.ndarray, labels: np.ndarray, k: int) -
 
     print("\n------------ Starting backward elimination algorithm -------------\n")
 
-    print(f"Initial accuracy with all {num_features} features is {best_accuracy:.1%}\n")
+    start_time = time.time() # start time
+
+    print(f"Initial accuracy with all {num_features} features. Feature set {{{', '.join(map(str, [f + 1 for f in selected_features]))}}} is {best_accuracy:.1%}\n")
 
     while len(selected_features) > 1:
         best_current_accuracy = -1.0
@@ -112,12 +128,17 @@ def backward_feature_elimination(data: np.ndarray, labels: np.ndarray, k: int) -
         else:
             break
 
+    end_time = time.time()  # Stop timing
+    run_time = end_time - start_time
+
     print("\n------------ Backward elimination complete ------------\n")
-    return best_feature_set, best_accuracy
+    return best_feature_set, best_accuracy, run_time
 
 if __name__ == "__main__":
 
     print("\n------- This is Kopal's Feature Selection Project -------- ")
+
+    print_machine_info()
 
     data_file = input("Enter the file name: ") # CS205_small_Data__22.txt, CS205_large_Data__1.txt
     print(f"\nWe're using the file: {data_file}")
@@ -136,16 +157,18 @@ if __name__ == "__main__":
     choice = input("Enter your choice (1 or 2): ")
 
     if choice == '1':
-        best_features, accuracy = forward_feature_selection(features, labels, k=1)
+        best_features, accuracy, run_time = forward_feature_selection(features, labels, k=1)
         print("\n------- Forward Selection Best Feature Set: --------\n")
         print(f"Best features found: {{{', '.join(map(str, [f + 1 for f in best_features]))}}}")
-        print(f"Accuracy: {accuracy:.1%}\n")
+        print(f"Accuracy: {accuracy:.1%}")
+        print(f"Run Time: {run_time/60:.1f} min\n")
 
     elif choice == '2':
-        best_features, accuracy = backward_feature_elimination(features, labels, k=1)
+        best_features, accuracy, run_time = backward_feature_elimination(features, labels, k=1)
         print("\n------- Backward Elimination Best Feature Set: -------\n")
         print(f"Best features found: {{{', '.join(map(str, [f + 1 for f in best_features]))}}}")
-        print(f"Accuracy: {accuracy:.1%}\n")
+        print(f"Accuracy: {accuracy:.1%}")
+        print(f"Run Time: {run_time/60:.1f} min\n")
 
     else:
       print(f"\n-------- Invalid Choice of Algorithm -------")
