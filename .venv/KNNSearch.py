@@ -4,6 +4,8 @@ from itertools import combinations
 from collections import Counter
 import time, platform, psutil
 import matplotlib.pyplot  as plt
+import re
+from ucimlrepo import fetch_ucirepo
 
 def print_machine_info(): # Machine Information
     print("\n--- Machine Information ---")
@@ -170,12 +172,20 @@ if __name__ == "__main__":
 
     print_machine_info()
 
-    data_file = input("Enter the file name: ") # CS205_small_Data__22.txt, CS205_large_Data__1.txt
-    print(f"\nWe're using the file: {data_file}")
+    data_file = input("Enter the file name to test the algorithm. Leave blank to evaluate on the default UCI ML Wine Dataset: ") 
+    # CS205_small_Data__22.txt, CS205_large_Data__1.txt
 
-    dataset = np.loadtxt(data_file, delimiter=None)
-    labels = dataset[:, 0].astype(int)
-    features = dataset[:, 1:]
+    if re.match(r'CS205.*', data_file):
+        print(f"\nTesting the algorithm on sample dataset: {data_file}\n")
+        dataset = np.loadtxt(data_file, delimiter=None)
+        labels = dataset[:, 0].astype(int)
+        features = dataset[:, 1:]
+    else:
+        print(f"\nEvaluating the algorithm on dataset: Wine\n")
+        wine = fetch_ucirepo(id=109) 
+        # data (as numpy arrays)
+        features = wine.data.features.to_numpy()
+        labels = wine.data.targets.to_numpy().flatten().astype(int)
 
     #k = 1
     print(f"The dataset has {features.shape[1]} features and {len(labels)} examples")
