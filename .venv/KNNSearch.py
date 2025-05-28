@@ -53,19 +53,15 @@ def plot_accuracy(accuracy_history: dict, title: str):
     feature_sets = [list(f) for f in accuracy_history.keys()]
     accuracies = list(accuracy_history.values())
 
-    sorted_indices = np.argsort([len(f) for f in feature_sets])
-    sorted_feature_sets = [feature_sets[i] for i in sorted_indices]
-    sorted_accuracies = [accuracies[i] for i in sorted_indices]
-
     labels = []
-    for features in sorted_feature_sets:
+    for features in feature_sets:
         if not features:
             labels.append("{}")
         else:
             labels.append("{" + ",".join(map(str, [f + 1 for f in features])) + "}")
 
     plt.figure(figsize=(12, 6))
-    plt.bar(labels, [acc * 100 for acc in sorted_accuracies], color='green')
+    plt.bar(labels, [acc * 100 for acc in accuracies], color='orange')
     plt.xlabel("Current Feature Set")
     plt.ylabel("Accuracy (%)")
     plt.title(title)
