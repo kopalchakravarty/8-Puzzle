@@ -1,1 +1,1 @@
-# 8-Puzzle
+# AI Project Repository
