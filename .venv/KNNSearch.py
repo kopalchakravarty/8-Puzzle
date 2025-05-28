@@ -70,7 +70,7 @@ def plot_accuracy(accuracy_history: dict, title: str):
     plt.ylabel("Accuracy (%)")
     plt.title(title)
     plt.xticks(rotation=45, ha="right")
-    plt.yticks(range(10, 100, 10))
+    plt.yticks(range(10, 110, 10))
     plt.tight_layout()
     plt.show()
 
@@ -196,7 +196,7 @@ if __name__ == "__main__":
         print(f"Best features found: {{{', '.join(map(str, [f + 1 for f in best_features]))}}}")
         print(f"Accuracy: {accuracy:.1%}")
         print(f"Run Time: {run_time/60:.1f} minutes\n")
-        plot_accuracy(accuracy_history, "Accuracy of Feature Subsets (Forward Selection)", accuracy)
+        plot_accuracy(accuracy_history, "Accuracy of Feature Subsets (Forward Selection)")
 
     elif choice == '2':
         best_features, accuracy, run_time, accuracy_history = backward_feature_elimination(features, labels, k=1)
@@ -204,7 +204,7 @@ if __name__ == "__main__":
         print(f"Best features found: {{{', '.join(map(str, [f + 1 for f in best_features]))}}}")
         print(f"Accuracy: {accuracy:.1%}")
         print(f"Run Time: {run_time/60:.1f} minutes\n")
-        plot_accuracy(accuracy_history, "Accuracy of Feature Subsets (Backward Elimination)", accuracy)
+        plot_accuracy(accuracy_history, "Accuracy of Feature Subsets (Backward Elimination)")
 
     else:
       print(f"\n-------- Invalid Choice of Algorithm -------")
