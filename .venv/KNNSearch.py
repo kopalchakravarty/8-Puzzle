@@ -63,7 +63,10 @@ def plot_accuracy(accuracy_history: dict, title: str):
             labels.append("{" + ",".join(map(str, [f + 1 for f in features])) + "}")
 
     plt.figure(figsize=(12, 6))
-    plt.bar(labels, [acc * 100 for acc in accuracies], color='orange')
+    bars = plt.bar(labels, [acc * 100 for acc in accuracies], color='orange')
+    for bar, acc in zip(bars, accuracies):
+        yval = acc * 100
+        plt.text(bar.get_x() + bar.get_width()/2, yval + 1, f'{yval:.1f}%', ha='center', fontsize=9)
     plt.xlabel("Current Feature Set")
     plt.ylabel("Accuracy (%)")
     plt.title(title)
